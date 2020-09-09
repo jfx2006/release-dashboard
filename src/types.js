@@ -6,12 +6,12 @@ import type {
   GetState as ReduxGetState
 } from "redux";
 
-export const products = ["firefox", "devedition"];
+export const products = ["firefox", "devedition", "thunderbird"];
 
 /*
  * state types
  */
-export type Product = "firefox" | "devedition";
+export type Product = "firefox" | "devedition" | "thunderbird";
 export type Status = "missing" | "exists" | "incomplete" | "error";
 
 export type ChannelVersion = [string, string];

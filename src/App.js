@@ -201,7 +201,14 @@ export function ReleasesMenu({ versions }: ReleasesMenuPropType) {
         <li>{getVersion("firefox", "release")}</li>
         <li>{getVersion("firefox", "esr")}</li>
       </ul>
+      <h2>Thunderbird Releases</h2>
+      <ul>
+        <li>{getVersion("thunderbird", "nightly")}</li>
+        <li>{getVersion("thunderbird", "beta")}</li>
+        <li>{getVersion("thunderbird", "release")}</li>
+      </ul>
     </div>
+
   );
 }
 
