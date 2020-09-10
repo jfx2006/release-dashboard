@@ -12,8 +12,8 @@ import {
 import type { Action, State } from "./types";
 
 export const initialState: State = {
-  version: ["firefox", ""],
-  productVersions: { firefox: {}, devedition: {} },
+  version: ["thunderbird", ""],
+  productVersions: { thunderbird: {} },
   releaseInfo: null,
   checkResults: {},
   pollbotVersion: null,

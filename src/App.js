@@ -44,7 +44,7 @@ function requestNotificationPermission(): void {
 export const parseUrl = (
   url: string
 ): ?{ service: string, product: Product, version: string } => {
-  const re = /^#(\w+)\/(\w+)\/([^/]+)\/?/; // Eg: #pollbot/firefox/50.0
+  const re = /^#(\w+)\/(\w+)\/([^/]+)\/?/; // Eg: #pollbot/thunderbird/50.0
   const parsed: ?(string[]) = url.match(re);
   if (!parsed) {
     return null;
@@ -193,14 +193,6 @@ export function ReleasesMenu({ versions }: ReleasesMenuPropType) {
   };
   return (
     <div className="releasesMenu">
-      <h2>Firefox Releases</h2>
-      <ul>
-        <li>{getVersion("firefox", "nightly")}</li>
-        <li>{getVersion("firefox", "beta")}</li>
-        <li>{getVersion("devedition", "devedition")}</li>
-        <li>{getVersion("firefox", "release")}</li>
-        <li>{getVersion("firefox", "esr")}</li>
-      </ul>
       <h2>Thunderbird Releases</h2>
       <ul>
         <li>{getVersion("thunderbird", "nightly")}</li>
@@ -208,7 +200,6 @@ export function ReleasesMenu({ versions }: ReleasesMenuPropType) {
         <li>{getVersion("thunderbird", "release")}</li>
       </ul>
     </div>
-
   );
 }
 
