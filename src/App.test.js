@@ -101,7 +101,7 @@ describe("<App />", () => {
     expect(global.fetch).toHaveBeenCalledWith(`${pollbotUrl}/__version__`);
   });
   it("calls requestStatus(version) with the version from the hash", () => {
-    global.window.location.hash = "#pollbot/firefox/123.0";
+    global.window.location.hash = "#pollbot/thunderbird/123.0";
 
     const module = require("./actions");
     module.requestStatus = jest.fn();
@@ -116,7 +116,7 @@ describe("<App />", () => {
         <ConnectedApp />
       </Provider>
     );
-    expect(module.requestStatus).toHaveBeenCalledWith("firefox", "123.0");
+    expect(module.requestStatus).toHaveBeenCalledWith("thunderbird", "123.0");
   });
   it("sets up auto-refresh", () => {
     const module = require("./actions");
@@ -194,10 +194,10 @@ describe("parseUrl", () => {
     expect(parseUrl("#pollbot/foobar/50.0")).toBeNull();
   });
   it("returns the proper structure for a matching url", () => {
-    expect(parseUrl("#pollbot/firefox/50.0")).toEqual({
+    expect(parseUrl("#pollbot/thunderbird/60.0")).toEqual({
       service: "pollbot",
-      product: "firefox",
-      version: "50.0"
+      product: "thunderbird",
+      version: "60.0"
     });
   });
 });
@@ -208,32 +208,24 @@ describe("<ReleasesMenu />", () => {
     const textContent = wrapper.text();
     expect(textContent).toContain("Nightly");
     expect(textContent).toContain("Beta");
-    expect(textContent).toContain("Devedition");
     expect(textContent).toContain("Release");
-    expect(textContent).toContain("Esr");
   });
   it("displays a list of channels with version numbers if there's product versions", () => {
     const wrapper = mount(
       <ReleasesMenu
         versions={{
-          firefox: {
-            nightly: "60.0a1",
-            beta: "59.0b4",
-            release: "58.0",
-            esr: "52.6.0esr"
-          },
-          devedition: {
-            devedition: "59.0b4"
+          thunderbird: {
+            nightly: "82.0a1",
+            beta: "81.0b4",
+            release: "78.2.1"
           }
         }}
       />
     );
     const textContent = wrapper.text();
-    expect(textContent).toContain("Nightly: 60.0a1");
-    expect(textContent).toContain("Beta: 59.0b4");
-    expect(textContent).toContain("Devedition: 59.0b4");
-    expect(textContent).toContain("Release: 58.0");
-    expect(textContent).toContain("Esr: 52.6.0esr");
+    expect(textContent).toContain("Nightly: 82.0a1");
+    expect(textContent).toContain("Beta: 81.0b4");
+    expect(textContent).toContain("Release: 78.2.1");
   });
 });
 
@@ -253,8 +245,8 @@ describe("<Errors />", () => {
 describe("<Dashboard />", () => {
   const releaseInfo = {
     channel: "nightly",
-    product: "firefox",
-    version: "50.0",
+    product: "thunderbird",
+    version: "60.0",
     checks: [
       { url: "some-url", title: "some title", actionable: true },
       { url: "some-url-2", title: "some title 2", actionable: false }
@@ -273,19 +265,21 @@ describe("<Dashboard />", () => {
     }
   };
   it("displays a help text when no version is selected", () => {
-    const wrapper = shallow(<Dashboard productVersion={["firefox", ""]} />);
+    const wrapper = shallow(<Dashboard productVersion={["thunderbird", ""]} />);
     expect(wrapper.text()).toContain(
       "Learn more about a specific version. Select a version number from the left menu."
     );
   });
   it("displays a spinner when a version is selected", () => {
-    const wrapper = shallow(<Dashboard productVersion={["firefox", "50.0"]} />);
+    const wrapper = shallow(
+      <Dashboard productVersion={["thunderbird", "60.0"]} />
+    );
     expect(wrapper.find(Spin).length).toBe(1);
   });
   it("displays an error when there's a Pollbot error", () => {
     const wrapper = mount(
       <Dashboard
-        productVersion={["firefox", "50.0"]}
+        productVersion={["thunderbird", "60.0"]}
         releaseInfo={{ message: "error from pollbot" }}
       />
     );
@@ -298,7 +292,7 @@ describe("<Dashboard />", () => {
   it("displays a list of check results when a release info is present", () => {
     const wrapper = shallow(
       <Dashboard
-        productVersion={["firefox", "50.0"]}
+        productVersion={["thunderbird", "60.0"]}
         releaseInfo={releaseInfo}
         checkResults={checkResults}
       />
@@ -309,7 +303,7 @@ describe("<Dashboard />", () => {
   it("displays an extra icon and tooltip on the checks that aren't actionable", () => {
     const wrapper = mount(
       <Dashboard
-        productVersion={["firefox", "50.0"]}
+        productVersion={["thunderbird", "60.0"]}
         releaseInfo={releaseInfo}
         checkResults={checkResults}
       />
@@ -324,8 +318,8 @@ describe("<Dashboard />", () => {
 describe("<OverallStatus />", () => {
   const releaseInfo = {
     channel: "nightly",
-    product: "firefox",
-    version: "50.0",
+    product: "thunderbird",
+    version: "60.0",
     checks: [
       { url: "some-url", title: "some title", actionable: true },
       { url: "some-url-2", title: "some title 2", actionable: false }

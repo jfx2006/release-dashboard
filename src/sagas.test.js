@@ -69,38 +69,36 @@ describe("sagas", () => {
     data.saga = cloneableGenerator(fetchOngoingVersions)();
 
     expect(data.saga.next().value).toEqual(
-      all([
-        call(fetchAndUpdateVersions, "firefox"),
-        call(fetchAndUpdateVersions, "devedition")
-      ])
+      all([call(fetchAndUpdateVersions, "thunderbird")])
     );
     expect(data.saga.next().done).toBe(true);
   });
 
   it("handles fetchAndUpdateVersions", () => {
     const data = {};
-    data.saga = cloneableGenerator(fetchAndUpdateVersions)("firefox");
+    data.saga = cloneableGenerator(fetchAndUpdateVersions)("thunderbird");
 
     const channelVersions = {
-      nightly: "57.0a1",
-      beta: "56.0b12",
-      release: "55.0.3",
-      esr: "52.3.0esr"
+      nightly: "82.0a1",
+      beta: "81.0b4",
+      release: "78.2.1"
     };
-    expect(data.saga.next().value).toEqual(call(getOngoingVersions, "firefox"));
+    expect(data.saga.next().value).toEqual(
+      call(getOngoingVersions, "thunderbird")
+    );
 
     // Clone to test success and failure of getOngoingVersions.
     data.sagaThrow = data.saga.clone();
 
     expect(data.saga.next(channelVersions).value).toEqual(
-      put(updateProductVersions("firefox", channelVersions))
+      put(updateProductVersions("thunderbird", channelVersions))
     );
     expect(data.saga.next().done).toBe(true);
 
     console.error = jest.fn();
     data.sagaThrow.throw("error");
     expect(console.error).toHaveBeenCalledWith(
-      "Failed getting the latest channel versions for product: firefox",
+      "Failed getting the latest channel versions for product: thunderbird",
       "error"
     );
     expect(data.sagaThrow.next().done).toBe(true);
@@ -110,9 +108,9 @@ describe("sagas", () => {
     const saga = updateUrl();
 
     expect(saga.next().value).toEqual(select());
-    expect(window.location.hash).not.toEqual("#pollbot/firefox/50.0");
-    saga.next({ version: ["firefox", "50.0"] });
-    expect(window.location.hash).toEqual("#pollbot/firefox/50.0");
+    expect(window.location.hash).not.toEqual("#pollbot/thunderbird/60.0");
+    saga.next({ version: ["thunderbird", "60.0"] });
+    expect(window.location.hash).toEqual("#pollbot/thunderbird/60.0");
   });
 
   it("notifies using checkResultAndUpdateAndNotify", () => {
@@ -176,8 +174,8 @@ describe("sagas", () => {
 
     const releaseInfo = {
       channel: "release",
-      product: "firefox",
-      version: "50.0",
+      product: "thunderbird",
+      version: "60.0",
       checks: [
         {
           title: "some test",
@@ -204,7 +202,7 @@ describe("sagas", () => {
 
     expect(
       data.saga.next({
-        version: "50.0",
+        version: "60.0",
         releaseInfo: releaseInfo,
         checkResults: {
           "some test": checkResult,
@@ -233,7 +231,7 @@ describe("sagas", () => {
 
     const checkResult = {
       status: "exists",
-      message: "check succesful",
+      message: "check successful",
       link: "some link"
     };
 
@@ -262,14 +260,14 @@ describe("sagas", () => {
   it("handles requestStatus", () => {
     const data = {};
     data.saga = cloneableGenerator(requestStatus)({
-      product: "firefox",
-      version: "50.0"
+      product: "thunderbird",
+      version: "60.0"
     });
 
     const releaseInfo = {
       channel: "release",
-      product: "firefox",
-      version: "50.0",
+      product: "thunderbird",
+      version: "60.0",
       checks: [
         {
           title: "some test",
@@ -286,15 +284,15 @@ describe("sagas", () => {
     expect(
       data.saga.next({
         productVersions: {
-          firefox: {
-            release: "50.0"
+          thunderbird: {
+            release: "60.0"
           }
         }
       }).value
-    ).toEqual(put(setVersion("firefox", "50.0")));
+    ).toEqual(put(setVersion("thunderbird", "60.0")));
     expect(data.saga.next().value).toEqual(call(updateUrl));
     expect(data.saga.next().value).toEqual(
-      call(getReleaseInfo, "firefox", "50.0")
+      call(getReleaseInfo, "thunderbird", "60.0")
     );
 
     // Clone to test success and failure of getReleaseInfo.
@@ -304,7 +302,7 @@ describe("sagas", () => {
     console.error = jest.fn();
     data.sagaThrow.throw("error");
     expect(console.error).toHaveBeenCalledWith(
-      "Failed getting the release info for firefox 50.0",
+      "Failed getting the release info for thunderbird 60.0",
       "error"
     );
     expect(data.sagaThrow.next().done).toBe(true);
@@ -324,16 +322,16 @@ describe("sagas", () => {
 
   it("handles requestStatus with a canonical url (using the channel)", () => {
     const data = {};
-    // Request status for "release", it should in turn set version for "50.0".
+    // Request status for "release", it should in turn set version for "60.0".
     data.saga = cloneableGenerator(requestStatus)({
-      product: "firefox",
+      product: "thunderbird",
       version: "release"
     });
 
     const releaseInfo = {
       channel: "release",
-      product: "firefox",
-      version: "50.0",
+      product: "thunderbird",
+      version: "60.0",
       checks: [
         {
           title: "some test",
@@ -350,15 +348,15 @@ describe("sagas", () => {
     expect(
       data.saga.next({
         productVersions: {
-          firefox: {
-            release: "50.0"
+          thunderbird: {
+            release: "60.0"
           }
         }
       }).value
-    ).toEqual(put(setVersion("firefox", "50.0")));
+    ).toEqual(put(setVersion("thunderbird", "60.0")));
     expect(data.saga.next().value).toEqual(call(updateUrl));
     expect(data.saga.next().value).toEqual(
-      call(getReleaseInfo, "firefox", "50.0")
+      call(getReleaseInfo, "thunderbird", "60.0")
     );
 
     // Clone to test success and failure of getReleaseInfo.
@@ -368,7 +366,7 @@ describe("sagas", () => {
     console.error = jest.fn();
     data.sagaThrow.throw("error");
     expect(console.error).toHaveBeenCalledWith(
-      "Failed getting the release info for firefox 50.0",
+      "Failed getting the release info for thunderbird 60.0",
       "error"
     );
     expect(data.sagaThrow.next().done).toBe(true);
@@ -388,16 +386,16 @@ describe("sagas", () => {
 
   it("handles requestStatus with a canonical url (using the channel) with a cold cache", () => {
     const data = {};
-    // Request status for "release", it should in turn set version for "50.0".
+    // Request status for "release", it should in turn set version for "60.0".
     data.saga = cloneableGenerator(requestStatus)({
-      product: "firefox",
+      product: "thunderbird",
       version: "release"
     });
 
     const releaseInfo = {
       channel: "release",
-      product: "firefox",
-      version: "50.0",
+      product: "thunderbird",
+      version: "60.0",
       checks: [
         {
           title: "some test",
@@ -412,21 +410,21 @@ describe("sagas", () => {
 
     expect(data.saga.next().value).toEqual(select());
     expect(data.saga.next({ productVersions: {} }).value).toEqual(
-      call(getOngoingVersions, "firefox")
+      call(getOngoingVersions, "thunderbird")
     );
-    expect(data.saga.next({ release: "50.0" }).value).toEqual(
-      put(updateProductVersions("firefox", { release: "50.0" }))
+    expect(data.saga.next({ release: "60.0" }).value).toEqual(
+      put(updateProductVersions("thunderbird", { release: "60.0" }))
     );
 
     expect(data.saga.next().value).toEqual(select());
     expect(
       data.saga.next({
-        productVersions: { firefox: { release: "50.0" } }
+        productVersions: { thunderbird: { release: "60.0" } }
       }).value
-    ).toEqual(put(setVersion("firefox", "50.0")));
+    ).toEqual(put(setVersion("thunderbird", "60.0")));
     expect(data.saga.next().value).toEqual(call(updateUrl));
     expect(data.saga.next().value).toEqual(
-      call(getReleaseInfo, "firefox", "50.0")
+      call(getReleaseInfo, "thunderbird", "60.0")
     );
 
     // Clone to test success and failure of getReleaseInfo.
@@ -436,7 +434,7 @@ describe("sagas", () => {
     console.error = jest.fn();
     data.sagaThrow.throw("error");
     expect(console.error).toHaveBeenCalledWith(
-      "Failed getting the release info for firefox 50.0",
+      "Failed getting the release info for thunderbird 60.0",
       "error"
     );
     expect(data.sagaThrow.next().done).toBe(true);

@@ -31,9 +31,9 @@ import {
 
 describe("action creators", () => {
   it("returns a UPDATE_VERSION_INPUT action for setVersion", () => {
-    expect(setVersion("firefox", "123")).toEqual({
+    expect(setVersion("thunderbird", "123")).toEqual({
       type: SET_VERSION,
-      product: "firefox",
+      product: "thunderbird",
       version: "123"
     });
   });
@@ -42,11 +42,10 @@ describe("action creators", () => {
       nightly: "57.0a1",
       beta: "56.0b12",
       release: "55.0.3",
-      esr: "52.3.0esr"
     };
-    expect(updateProductVersions("firefox", channelVersions)).toEqual({
+    expect(updateProductVersions("thunderbird", channelVersions)).toEqual({
       type: UPDATE_PRODUCT_VERSIONS,
-      product: "firefox",
+      product: "thunderbird",
       versions: channelVersions
     });
   });
@@ -64,35 +63,35 @@ describe("action creators", () => {
   });
   it("returns a UPDATE_RELEASE_INFO action for updateReleaseInfo", () => {
     const releaseInfo = {
-      product: "firefox",
+      product: "thunderbird",
       checks: [
         {
           title: "Archive Release",
-          url: "https://pollbot.dev.mozaws.net/v1/firefox/55.0.3/archive"
+          url: "https://pollbot.dev.mozaws.net/v1/thunderbird/55.0.3/archive"
         },
         {
           title: "Balrog update rules",
-          url: "https://pollbot.dev.mozaws.net/v1/firefox/55.0.3/balrog-rules"
+          url: "https://pollbot.dev.mozaws.net/v1/thunderbird/55.0.3/balrog-rules"
         },
         {
           title: "Download links",
           url:
-            "https://pollbot.dev.mozaws.net/v1/firefox/55.0.3/bedrock/download-links"
+            "https://pollbot.dev.mozaws.net/v1/thunderbird/55.0.3/bedrock/download-links"
         },
         {
           title: "Product details",
           url:
-            "https://pollbot.dev.mozaws.net/v1/firefox/55.0.3/product-details"
+            "https://pollbot.dev.mozaws.net/v1/thunderbird/55.0.3/product-details"
         },
         {
           title: "Release notes",
           url:
-            "https://pollbot.dev.mozaws.net/v1/firefox/55.0.3/bedrock/release-notes"
+            "https://pollbot.dev.mozaws.net/v1/thunderbird/55.0.3/bedrock/release-notes"
         },
         {
           title: "Security advisories",
           url:
-            "https://pollbot.dev.mozaws.net/v1/firefox/55.0.3/bedrock/security-advisories"
+            "https://pollbot.dev.mozaws.net/v1/thunderbird/55.0.3/bedrock/security-advisories"
         }
       ],
       version: "55.0.3",
@@ -105,10 +104,10 @@ describe("action creators", () => {
   });
   it("returns a ADD_CHECK_RESULT action for addCheckResult", () => {
     const checkResult = {
-      link: "https://archive.mozilla.org/pub/firefox/releases/55.0.3/",
+      link: "https://archive.mozilla.org/pub/thunderbird/releases/55.0.3/",
       status: "exists",
       message:
-        "The archive exists at https://archive.mozilla.org/pub/firefox/releases/55.0.3/ and all 95 locales are present for all platforms (linux-i686, linux-x86_64, mac, win32, win64)"
+        "The archive exists at https://archive.mozilla.org/pub/thunderbird/releases/55.0.3/ and all 95 locales are present for all platforms (linux-i686, linux-x86_64, mac, win32, win64)"
     };
     expect(addCheckResult("some check", checkResult)).toEqual({
       type: ADD_CHECK_RESULT,
@@ -147,9 +146,9 @@ describe("sagas action creator", () => {
     expect(refreshStatus()).toEqual({ type: REFRESH_STATUS });
   });
   it("handles a REQUEST_STATUS action for requestStatus", () => {
-    expect(requestStatus("firefox", "50.0")).toEqual({
+    expect(requestStatus("thunderbird", "50.0")).toEqual({
       type: REQUEST_STATUS,
-      product: "firefox",
+      product: "thunderbird",
       version: "50.0"
     });
   });

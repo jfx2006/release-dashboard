@@ -171,39 +171,38 @@ describe("deliveryDashboard reducer", () => {
     expect(
       deliveryDashboard(undefined, {
         type: SET_VERSION,
-        product: "firefox",
-        version: "50.0"
+        product: "thunderbird",
+        version: "60.0"
       })
     ).toEqual(
-      stateWith({ version: ["firefox", "50.0"], shouldRefresh: false })
+      stateWith({ version: ["thunderbird", "60.0"], shouldRefresh: false })
     );
     expect(
       deliveryDashboard(
         stateWith({
-          version: ["firefox", "50.0"]
+          version: ["thunderbird", "60.0"]
         }),
         {
           type: SET_VERSION,
-          product: "firefox",
-          version: "51.0"
+          product: "thunderbird",
+          version: "61.0"
         }
       )
     ).toEqual(
-      stateWith({ version: ["firefox", "51.0"], shouldRefresh: false })
+      stateWith({ version: ["thunderbird", "61.0"], shouldRefresh: false })
     );
   });
   it("handles UPDATE_PRODUCT_VERSIONS", () => {
     expect(
       deliveryDashboard(undefined, {
         type: UPDATE_PRODUCT_VERSIONS,
-        product: "firefox",
+        product: "thunderbird",
         versions: { release: "0.1.2" }
       })
     ).toEqual(
       stateWith({
         productVersions: {
-          firefox: { release: "0.1.2" },
-          devedition: {}
+          thunderbird: { release: "0.1.2" }
         }
       })
     );
@@ -211,21 +210,19 @@ describe("deliveryDashboard reducer", () => {
       deliveryDashboard(
         stateWith({
           productVersions: {
-            firefox: { release: "0.1.2" },
-            devedition: {}
+            thunderbird: { release: "0.1.2" }
           }
         }),
         {
           type: UPDATE_PRODUCT_VERSIONS,
-          product: "firefox",
+          product: "thunderbird",
           versions: { nightly: "1.2.3", release: "0.1.3" }
         }
       )
     ).toEqual(
       stateWith({
         productVersions: {
-          firefox: { nightly: "1.2.3", release: "0.1.3" },
-          devedition: {}
+          thunderbird: { nightly: "1.2.3", release: "0.1.3" }
         }
       })
     );
