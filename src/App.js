@@ -130,7 +130,7 @@ export class App extends React.Component<AppProps, void> {
       <div>
         <header>
           <h1>
-            <a href=".">Delivery Dashboard</a>
+            <a href=".">Thunderbird Release Dashboard</a>
           </h1>
         </header>
         <Errors errors={this.props.errors} />
@@ -143,7 +143,7 @@ export class App extends React.Component<AppProps, void> {
           </Layout.Content>
         </Layout>
         <footer>
-          Delivery dashboard version:{" "}
+          Thunderbird Release Dashboard version:{" "}
           <VersionLink versionData={deliveryDashboardVersionData} />
           &nbsp;--&nbsp;Pollbot version:{" "}
           <VersionLink versionData={this.props.pollbotVersion} />
@@ -193,12 +193,10 @@ export function ReleasesMenu({ versions }: ReleasesMenuPropType) {
   };
   return (
     <div className="releasesMenu">
-      <h2>Thunderbird Releases</h2>
-      <ul>
-        <li>{getVersion("thunderbird", "nightly")}</li>
-        <li>{getVersion("thunderbird", "beta")}</li>
-        <li>{getVersion("thunderbird", "release")}</li>
-      </ul>
+      <h3>Release Channels</h3>
+      {getVersion("thunderbird", "nightly")}
+      {getVersion("thunderbird", "beta")}
+      {getVersion("thunderbird", "release")}
     </div>
   );
 }
