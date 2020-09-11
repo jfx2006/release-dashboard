@@ -1,4 +1,4 @@
-NAME="Delivery Dashboard"
+NAME="Thunderbird Release Dashboard"
 SOURCE=$(git config remote.origin.url | sed -e 's|git@|https://|g' | sed -e 's|github.com:|github.com/|g')
 VERSION=$(git describe --always --tag)
 COMMIT=$(git log --pretty=format:'%H' -n 1)
