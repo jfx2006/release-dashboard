@@ -1,10 +1,16 @@
 // @flow
-import "photon-ant";
+import './bootstrap-charming.css';
 import * as React from "react";
-import { Alert, Card, Icon, Layout, Spin, Tooltip } from "antd";
+import {
+  Alert, Container, Row, Col,
+  Card, CardHeader, CardLink, CardBody,
+  Navbar, NavbarBrand,
+  ListGroup, ListGroupItem,
+  Spinner, Tooltip
+} from "reactstrap";
 import "./App.css";
-import { connect } from "react-redux";
-import type { MapStateToProps } from "react-redux";
+import {connect} from "react-redux";
+import type {MapStateToProps} from "react-redux";
 import {
   capitalize,
   localUrlFromVersion,
@@ -23,9 +29,8 @@ import type {
   Product,
   ReleaseInfo,
   State,
-  Status
 } from "./types";
-import { products } from "./types";
+import {products} from "./types";
 
 const deliveryDashboardVersionData: APIVersionData = require("./version.json");
 
@@ -69,6 +74,7 @@ type AppProps = {
   shouldRefresh: boolean,
   errors: Error[]
 };
+
 export class App extends React.Component<AppProps, void> {
   refreshIntervalId: ?IntervalID;
 
@@ -128,30 +134,29 @@ export class App extends React.Component<AppProps, void> {
   render() {
     return (
       <div>
-        <header>
-          <h1>
-            <a href=".">Thunderbird Release Dashboard</a>
-          </h1>
-        </header>
-        <Errors errors={this.props.errors} />
-        <Layout className="mainContent">
-          <Layout.Sider breakpoint="md" collapsedWidth={0}>
-            <SideBar />
-          </Layout.Sider>
-          <Layout.Content>
-            <CurrentRelease />
-          </Layout.Content>
-        </Layout>
+        <Navbar color="dark" dark expand="md">
+          <NavbarBrand href=".">Thunderbird Release Dashboard</NavbarBrand>
+        </Navbar>
+        <Errors errors={this.props.errors}/>
+        <div className="main">
+          <div className="sidebar">
+            <SideBar/>
+          </div>
+          <div className="content">
+            <CurrentRelease/>
+          </div>
+        </div>
         <footer>
           Thunderbird Release Dashboard version:{" "}
-          <VersionLink versionData={deliveryDashboardVersionData} />
+          <VersionLink versionData={deliveryDashboardVersionData}/>
           &nbsp;--&nbsp;Pollbot version:{" "}
-          <VersionLink versionData={this.props.pollbotVersion} />
+          <VersionLink versionData={this.props.pollbotVersion}/>
         </footer>
       </div>
     );
   }
 }
+
 const connectedAppMapStateToProps: MapStateToProps<*, *, *> = (
   state: State
 ) => ({
@@ -162,7 +167,7 @@ const connectedAppMapStateToProps: MapStateToProps<*, *, *> = (
 });
 export const ConnectedApp = connect(
   connectedAppMapStateToProps,
-  (dispatch: Dispatch) => ({ dispatch: dispatch })
+  (dispatch: Dispatch) => ({dispatch: dispatch})
 )(App);
 
 const sideBarMapStateToProps: MapStateToProps<*, *, *> = (state: State) => ({
@@ -174,30 +179,30 @@ type ReleasesMenuPropType = {
   versions: ProductVersions
 };
 
-export function ReleasesMenu({ versions }: ReleasesMenuPropType) {
+export function ReleasesMenu({versions}: ReleasesMenuPropType) {
   const getVersion = (product, channel) => {
     const capitalizedChannel = capitalize(channel);
     if (versions.hasOwnProperty(product) && versions[product][channel]) {
       return (
-        <a
-          href={localUrlFromVersion([product, channel])}
-        >{`${capitalizedChannel}: ${versions[product][channel]}`}</a>
+        <ListGroupItem tag="a"
+                       href={localUrlFromVersion([product, channel])}
+        >{`${capitalizedChannel}: ${versions[product][channel]}`}</ListGroupItem>
       );
     } else {
       return (
         <span>
-          {capitalizedChannel}: <Spin />
+          {capitalizedChannel}: <Spinner type="grow" color="dark" />
         </span>
       );
     }
   };
   return (
-    <div className="releasesMenu">
-      <h3>Release Channels</h3>
+    <ListGroup>
+      <ListGroupItem active>Channels</ListGroupItem>
       {getVersion("thunderbird", "nightly")}
       {getVersion("thunderbird", "beta")}
       {getVersion("thunderbird", "release")}
-    </div>
+    </ListGroup>
   );
 }
 
@@ -214,7 +219,7 @@ type ErrorsPropType = {
   errors: Error[]
 };
 
-export function Errors({ errors }: ErrorsPropType) {
+export function Errors({errors}: ErrorsPropType) {
   if (!errors || errors.length === 0) {
     return null;
   }
@@ -223,15 +228,12 @@ export function Errors({ errors }: ErrorsPropType) {
       {errors.map(error => {
         const [title, err] = error;
         return (
-          <Alert
-            key={title}
-            message={"Failed getting check result for '" + title + "': " + err}
-            type="error"
-            banner
-          />
+          <Alert color="danger">
+            {"Failed getting check result for '" + title + "': " + err}
+          </Alert>
         );
       })}
-      <br />
+      <br/>
     </div>
   );
 }
@@ -243,10 +245,10 @@ type DashboardPropType = {
 };
 
 export function Dashboard({
-  releaseInfo,
-  checkResults,
-  productVersion
-}: DashboardPropType) {
+                            releaseInfo,
+                            checkResults,
+                            productVersion
+                          }: DashboardPropType) {
   const [product, version] = productVersion;
   if (version === "") {
     return (
@@ -256,30 +258,38 @@ export function Dashboard({
       </p>
     );
   } else if (!releaseInfo) {
-    return <Spin />;
+    return <Spinner type="grow" color="dark" />;
   } else if (releaseInfo.message) {
-    return <Errors errors={[["Pollbot error", releaseInfo.message]]} />;
+    return <Errors errors={[["Pollbot error", releaseInfo.message]]}/>;
   } else {
     return (
-      <div>
-        <h2 style={{ marginBottom: "1em", display: "flex", flexWrap: "wrap" }}>
-          {capitalize(product)} {version}{" "}
-          <OverallStatus
-            releaseInfo={releaseInfo}
-            checkResults={checkResults}
-          />
-        </h2>
-        <div className="dashboard">
-          {releaseInfo.checks.map(check => (
-            <DisplayCheckResult
-              key={check.title}
-              title={check.title}
-              actionable={check.actionable}
-              checkResult={checkResults[check.title]}
+      <Container>
+        <Row>
+          <Col md={"10"}>
+            <h2>
+              {capitalize(product)} {version}{" "}
+            </h2>
+          </Col>
+          <Col md={"2"} style={{float: "right"}}>
+            <OverallStatus
+              releaseInfo={releaseInfo}
+              checkResults={checkResults}
             />
-          ))}
-        </div>
-      </div>
+          </Col>
+        </Row>
+        <Row>
+          <div className="dashboard">
+            {releaseInfo.checks.map(check => (
+              <DisplayCheckResult
+                key={check.title}
+                title={check.title}
+                actionable={check.actionable}
+                checkResult={checkResults[check.title]}
+              />
+            ))}
+          </div>
+        </Row>
+      </Container>
     );
   }
 }
@@ -290,9 +300,9 @@ type OverallStatusPropType = {
 };
 
 export function OverallStatus({
-  releaseInfo,
-  checkResults
-}: OverallStatusPropType) {
+                                releaseInfo,
+                                checkResults
+                              }: OverallStatusPropType) {
   const checksStatus = releaseInfo.checks.map(
     check => checkResults[check.title]
   );
@@ -300,7 +310,7 @@ export function OverallStatus({
     result => typeof result === "undefined"
   );
   if (!allChecksCompleted) {
-    return <Spin />;
+    return <Spinner type="grow" color="dark" />;
   }
 
   let actionableChecks = [];
@@ -316,19 +326,16 @@ export function OverallStatus({
   let type;
   let message;
   if (actionableChecks.some(status => status !== "exists")) {
-    type = "error";
+    type = "danger";
     message = "Some checks failed";
   } else {
     type = "success";
     message = "All checks are successful";
   }
   return (
-    <Alert
-      message={message}
-      type={type}
-      showIcon
-      style={{ marginLeft: "1em" }}
-    />
+    <Alert color={type} message={message}>
+      {message}
+    </Alert>
   );
 }
 
@@ -337,78 +344,60 @@ type DisplayCheckResultProps = {
   actionable: boolean,
   checkResult: CheckResult
 };
-export class DisplayCheckResult extends React.PureComponent<
-  DisplayCheckResultProps,
-  void
-> {
+
+export class DisplayCheckResult extends React.PureComponent<DisplayCheckResultProps,
+  void> {
   render() {
-    const { title, actionable, checkResult } = this.props;
+    const getLabelClass = (checkResult, actionable) => {
+      if (checkResult) {
+        if (checkResult.status === "error") {
+          return "danger";
+        }
+        if (checkResult.status === "exists") {
+          return "success";
+        }
+        if (actionable) {
+          return "warning";
+        }
+        return "info"; // It's a non actionable item.
+      }
+      return "info"
+    };
+
+    const {title, actionable, checkResult} = this.props;
     let titleContent = title;
+    let color = getLabelClass(checkResult, actionable);
     if (!actionable) {
       titleContent = (
         <div>
-          <Tooltip title="This check is not actionable">
-            <Icon type="notification" /> {title}
+          <Tooltip placement="bottom" trigger={"hover"}>
+            {title}
           </Tooltip>
         </div>
       );
     }
     return (
-      <Card title={titleContent} style={{ textAlign: "center" }}>
-        {checkResult ? (
-          <DisplayStatus
-            status={checkResult.status}
-            message={checkResult.message}
-            url={checkResult.link}
-            actionable={actionable}
-          />
-        ) : (
-          <Spin />
-        )}
+      <Card color={color}>
+        <CardHeader>{titleContent}</CardHeader>
+        <CardBody style={{backgroundColor: '#fff'}}>
+          {checkResult ? (
+            <CardLink href={checkResult.link}>
+              {checkResult.message}
+            </CardLink>
+          ) : (
+            <Spinner type="grow" color="dark" />
+          )}
+        </CardBody>
       </Card>
     );
   }
 }
 
-export function DisplayStatus({
-  status,
-  message,
-  url,
-  actionable
-}: {
-  status: Status,
-  message: string,
-  url: string,
-  actionable: boolean
-}) {
-  const getLabelClass = (status, actionable) => {
-    if (status === "error") {
-      return "error";
-    }
-    if (status === "exists") {
-      return "success";
-    }
-    if (actionable) {
-      return "warning";
-    }
-    return "info"; // It's a non actionable item.
-  };
-  return (
-    <a title={message} href={url}>
-      <Alert
-        message={message}
-        type={getLabelClass(status, actionable)}
-        showIcon
-      />
-    </a>
-  );
-}
-
-function VersionLink({ versionData }: { versionData: APIVersionData }) {
+function VersionLink({versionData}: { versionData: APIVersionData }) {
   if (!versionData) {
     return null;
   }
-  const { commit, source, version } = versionData;
+  const {commit, source, version} = versionData;
   const sourceUrl = source.replace(/\.git/, "");
   const url = `${sourceUrl}/commit/${commit}`;
   return <a href={url}>{version}</a>;

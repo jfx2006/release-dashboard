@@ -6,106 +6,35 @@ html {
 }
 
 body {
-  background-color: #424040;
+  background-color: #101010;
   margin-bottom: 54px;
   font-size: 16px;
 }
 
-header {
-  align-items: center;
-  color: #fff;
-  background-color: #5a7ec5;
+
+nav {
+  margin-bottom: 1em;
+}
+
+.main {
   display: flex;
-  height: 80px;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  padding: 0 48px;
-}
-
-header a {
-  color: #fff;
-  font-weight: bold;
-}
-
-header a:hover {
-  color: #fff;
-}
-
-header h1 {
-  margin: 0;
-}
-
-.ant-alert.ant-alert-success {
-  background-color: #35bd49;
-}
-
-.ant-alert.ant-alert-error {
-  background-color: #ae0000;
-}
-
-.ant-alert.ant-alert-warning {
-  background-color: #f0d149;
-}
-
-.ant-layout-sider {
-  background-color: #fff;
-  border-right: none;
-}
-
-.ant-layout-sider li {
-  padding: 5px;
-}
-
-.ant-layout-content {
-  padding-left: 20px;
-}
-
-h2 {
-  font-weight: bold;
-}
-
-.releasesMenu h3 {
-  padding: .75rem 1.25rem;
-  background-color: #5a7ec5;
-  color: #fff;
-  margin-bottom: 0;
-  border: 1px solid #5a7ec5;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-bottom: none;
-  font-weight: bold;
-}
-
-.releasesMenu a {
-  padding: .75rem 1.25rem;
-  color: #495057;
-  background-color: #fff;
-  border: 1px solid #424040;
-  width: 100%;
-  display: block;
-  border-bottom: none;
-}
-
-.releasesMenu a.active {
-  background-color: #d1dbef;
-}
-
-.releasesMenu a:last-child {
-  border-bottom: 1px solid #424040;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
-.releasesMenu a:hover {
-  background-color: #f5e498;
-}
-
-.mainContent {
   background-color: #fff;
   border-radius: 4px;
   margin: 0 48px;
   margin-bottom: 24px;
   padding: 24px;
+  flex-direction: row;
+}
+
+.sidebar {
+  flex: 0 0 200px;
+  max-width: 200px;
+  min-width: 200px;
+  width: 200px;
+}
+
+.content {
+  padding-left: 2em;
 }
 
 /* List of check results for a given release */
@@ -115,8 +44,16 @@ h2 {
   grid-gap: 20px;
 }
 
-.ant-card .ant-card-body {
-  word-wrap: break-word;
+.card-header {
+  font-weight: bold;
+}
+
+.card-link {
+  color: #212529;
+}
+
+.card-link a:hover {
+  color: #212529;
 }
 
 footer {
@@ -138,32 +75,9 @@ footer {
     display: block;
   }
 
-  .mainContent {
+  .main {
     border-radius: 0;
     margin: 0;
     padding: 5px;
-  }
-
-  .ant-card {
-    margin-bottom: 5px;
-  }
-
-  .ant-layout-sider {
-    background-color: #fff;
-    border-right: 1px solid #e9e9e9;
-    left: -5px;
-    top: -110px;
-  }
-
-  .ant-layout-sider .menu {
-    padding: 5px;
-  }
-
-  .ant-layout-sider-zero-width-trigger {
-    top: 20px;
-  }
-
-  .ant-layout-content {
-    border-left: none;
   }
 }

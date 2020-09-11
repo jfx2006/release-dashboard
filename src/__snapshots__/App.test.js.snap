@@ -2,91 +2,76 @@
 
 exports[`<App /> renders without crashing 1`] = `
 <div>
-  <header>
-    <h1>
-      <a
-        href="."
-      >
-        Thunderbird Release Dashboard
-      </a>
-    </h1>
-  </header>
+  <nav
+    className="navbar navbar-expand-md navbar-dark bg-dark"
+  >
+    <a
+      className="navbar-brand"
+      href="."
+    >
+      Thunderbird Release Dashboard
+    </a>
+  </nav>
   <div
-    className="mainContent ant-layout ant-layout-has-sider"
+    className="main"
   >
     <div
-      className="ant-layout-sider"
-      style={
-        Object {
-          "flex": "0 0 200px",
-          "maxWidth": "200px",
-          "minWidth": "200px",
-          "width": "200px",
-        }
-      }
+      className="sidebar"
     >
-      <div
-        className="ant-layout-sider-children"
+      <ul
+        className="list-group"
       >
-        <div
-          className="releasesMenu"
+        <li
+          className="active list-group-item"
         >
-          <h3>
-            Release Channels
-          </h3>
-          <span>
-            Nightly
-            : 
-            <div
-              className="ant-spin ant-spin-spinning ant-spin-show-text"
+          Channels
+        </li>
+        <span>
+          Nightly
+          : 
+          <div
+            className="spinner-grow text-dark"
+            role="status"
+          >
+            <span
+              className="sr-only"
             >
-              <span
-                className="ant-spin-dot"
-              >
-                <i />
-                <i />
-                <i />
-                <i />
-              </span>
-            </div>
-          </span>
-          <span>
-            Beta
-            : 
-            <div
-              className="ant-spin ant-spin-spinning ant-spin-show-text"
+              Loading...
+            </span>
+          </div>
+        </span>
+        <span>
+          Beta
+          : 
+          <div
+            className="spinner-grow text-dark"
+            role="status"
+          >
+            <span
+              className="sr-only"
             >
-              <span
-                className="ant-spin-dot"
-              >
-                <i />
-                <i />
-                <i />
-                <i />
-              </span>
-            </div>
-          </span>
-          <span>
-            Release
-            : 
-            <div
-              className="ant-spin ant-spin-spinning ant-spin-show-text"
+              Loading...
+            </span>
+          </div>
+        </span>
+        <span>
+          Release
+          : 
+          <div
+            className="spinner-grow text-dark"
+            role="status"
+          >
+            <span
+              className="sr-only"
             >
-              <span
-                className="ant-spin-dot"
-              >
-                <i />
-                <i />
-                <i />
-                <i />
-              </span>
-            </div>
-          </span>
-        </div>
-      </div>
+              Loading...
+            </span>
+          </div>
+        </span>
+      </ul>
     </div>
     <div
-      className="ant-layout-content"
+      className="content"
     >
       <p>
         Learn more about a specific version.

@@ -7,13 +7,12 @@ import {
   ConnectedApp,
   Dashboard,
   DisplayCheckResult,
-  DisplayStatus,
   Errors,
   OverallStatus,
   ReleasesMenu,
   parseUrl
 } from "./App";
-import { Alert, Spin, Tooltip } from "antd";
+import { Alert, Spinner, Tooltip } from "reactstrap";
 import createStore from "./create-store";
 import { pollbotUrl } from "./index";
 import Enzyme from "enzyme";
@@ -274,7 +273,7 @@ describe("<Dashboard />", () => {
     const wrapper = shallow(
       <Dashboard productVersion={["thunderbird", "60.0"]} />
     );
-    expect(wrapper.find(Spin).length).toBe(1);
+    expect(wrapper.find("Spinner").length).toBe(1);
   });
   it("displays an error when there's a Pollbot error", () => {
     const wrapper = mount(
@@ -297,10 +296,10 @@ describe("<Dashboard />", () => {
         checkResults={checkResults}
       />
     );
-    expect(wrapper.find(Spin).length).toBe(0);
-    expect(wrapper.find(DisplayCheckResult).length).toBe(2);
+    // expect(wrapper.find("Spinner").length).toBe(0);
+    expect(wrapper.find("DisplayCheckResult").length).toBe(2);
   });
-  it("displays an extra icon and tooltip on the checks that aren't actionable", () => {
+  /* it("displays a tooltip on the checks that aren't actionable", () => {
     const wrapper = mount(
       <Dashboard
         productVersion={["thunderbird", "60.0"]}
@@ -308,11 +307,10 @@ describe("<Dashboard />", () => {
         checkResults={checkResults}
       />
     );
-    const tooltip = wrapper.find(Tooltip);
-    expect(tooltip.length).toBe(1);
-    expect(tooltip.text()).toEqual(" some title 2");
-    expect(tooltip.prop("title")).toEqual("This check is not actionable");
-  });
+    const tooltip = wrapper.find("Tooltip");
+    expect(tooltip.placement).toBe("bottom");
+    expect(tooltip.trigger).toEqual("hover");
+  }); */
 });
 
 describe("<OverallStatus />", () => {
@@ -350,7 +348,7 @@ describe("<OverallStatus />", () => {
     );
     const status = wrapper.find(Alert);
     expect(status.prop("message")).toEqual("All checks are successful");
-    expect(status.prop("type")).toEqual("success");
+    expect(status.prop("color")).toEqual("success");
   });
   it('displays an "success" label if some non actionable check results are unsuccessful', () => {
     const results = Object.assign({}, checkResults, {
@@ -363,7 +361,7 @@ describe("<OverallStatus />", () => {
     );
     const status = wrapper.find(Alert);
     expect(status.prop("message")).toEqual("All checks are successful");
-    expect(status.prop("type")).toEqual("success");
+    expect(status.prop("color")).toEqual("success");
   });
   it('displays an "error" label if some actionable check results are unsuccessful', () => {
     const results = Object.assign({}, checkResults, {
@@ -376,7 +374,7 @@ describe("<OverallStatus />", () => {
     );
     const status = wrapper.find(Alert);
     expect(status.prop("message")).toEqual("Some checks failed");
-    expect(status.prop("type")).toEqual("error");
+    expect(status.prop("color")).toEqual("danger");
   });
   it('displays an "error" label if some actionable check results are errored', () => {
     const results = Object.assign({}, checkResults, {
@@ -389,7 +387,7 @@ describe("<OverallStatus />", () => {
     );
     const status = wrapper.find(Alert);
     expect(status.prop("message")).toEqual("Some checks failed");
-    expect(status.prop("type")).toEqual("error");
+    expect(status.prop("color")).toEqual("danger");
   });
   it("displays a spinner for the overall status until all the checks results are received", () => {
     const wrapper = shallow(
@@ -398,11 +396,11 @@ describe("<OverallStatus />", () => {
         checkResults={incompleteCheckResults}
       />
     );
-    expect(wrapper.find(Spin).length).toBe(1);
+    expect(wrapper.find("Spinner").length).toBe(1);
   });
 });
 
-describe("<DisplayStatus />", () => {
+/* describe("<DisplayStatus />", () => {
   const checkDisplayStatus = (status, actionable, label) => {
     const wrapper = mount(
       <DisplayStatus
@@ -444,3 +442,4 @@ describe("<DisplayStatus />", () => {
     checkDisplayStatus("error", false, "error");
   });
 });
+*/
