@@ -134,9 +134,6 @@ export class App extends React.Component<AppProps, void> {
   render() {
     return (
       <div>
-        <Navbar color="dark" dark expand="md">
-          <NavbarBrand href=".">Thunderbird Release Dashboard</NavbarBrand>
-        </Navbar>
         <Errors errors={this.props.errors}/>
         <div className="main">
           <div className="sidebar">

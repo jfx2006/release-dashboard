@@ -18,8 +18,8 @@
   "engines": {
     "node": ">=12"
   },
-  "homepage": "https://mozilla.github.io/delivery-dashboard/",
-  "homepage_dev": "https://mozilla.github.io/delivery-dashboard/dev/",
+  "homepage": "./",
+  "homepage_dev": "./",
   "scripts": {
     "start": "react-app-rewired start",
     "prestart": "yarn run version-file",
